@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 //15:24 touch finished, debugs output is 1
+//17:16 instantiate finished, but i don't think is too necessary. 
+
 public class TouchManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
@@ -14,7 +16,6 @@ public class TouchManager : MonoBehaviour
         touchPressAction = pinput.actions.FindAction("TouchPress");
         //touchPressAction = pinput.actions.["TouchPress"]; //apparent old school way
         touchPositionAction = pinput.actions.FindAction("TouchPosition");
-
     }
 
     private void OnEnable()
@@ -37,7 +38,7 @@ public class TouchManager : MonoBehaviour
         float value = context.ReadValue<float>();
         Debug.Log(value);
         context.ReadValueAsObject();
-
+        
 
     }
 }
