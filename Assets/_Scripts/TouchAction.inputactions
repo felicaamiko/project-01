@@ -2,7 +2,7 @@
     "name": "TouchAction",
     "maps": [
         {
-            "name": "Touch",
+            "name": "Play",
             "id": "0c735c8d-65ce-411c-a246-9465bf9669b3",
             "actions": [
                 {
@@ -18,6 +18,15 @@
                     "name": "TouchPress",
                     "type": "Button",
                     "id": "9a431cc4-62ef-4941-96f3-89489ce2fa46",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Tilt",
+                    "type": "Button",
+                    "id": "74e9af82-3d7d-4b6e-96ee-6f561a0a8e4e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TouchPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "975fc701-794c-4ca7-8fbd-1355a5e68287",
+                    "path": "<Sensor>",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tilt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
