@@ -2,7 +2,7 @@
     "name": "TouchAction",
     "maps": [
         {
-            "name": "Play",
+            "name": "Touch",
             "id": "0c735c8d-65ce-411c-a246-9465bf9669b3",
             "actions": [
                 {
