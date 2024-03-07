@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 //TODO
@@ -29,10 +26,12 @@ public class Goober : MonoBehaviour
     public static bool isgrounded = true;
 
     private Vector2 currvec;
+    private Vector2 prevprevprevvec;
+    private Vector2 prevprevvec;
     private Vector2 prevvec;
     private Vector2 forwardvec;
     private float rotangle;
-    private float prevrotangle; 
+    private float prevrotangle;
 
     private Quaternion finaloverriderotation;
     private Vector3 finalrot;
@@ -41,12 +40,16 @@ public class Goober : MonoBehaviour
 
     public GameObject thisobject;
     Rigidbody rb;
+    public static bool istapped = false;
 
     public static bool istouched = false;
 
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip hitsound;
-
+    [SerializeField] AudioSource audioSourcespeed;
+    [SerializeField] AudioClip speedsound;
+    [SerializeField] AudioSource audioSourcedeath;
+    [SerializeField] AudioClip deathsound;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,16 +59,29 @@ public class Goober : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //counter++;
         //if (prev*100 - curr*100 == 0) { isgrounded = true; }
         //if (prev * 100 - curr*100 != 0) { isgrounded = false; }
-
-        if (curr > -3 ) { isgrounded = true; }
+        //if (counter > 100000000)
+        //{
+        //    prevvec = currvec;//collects a moment
+        //    prevrotangle = rotangle;
+        //    counter = 0;
+        //}
+        if (curr > -3) { isgrounded = true; }
         if (curr < -3) { isgrounded = false; }
         //Debug.Log(prev - curr + "<prev-curr" + isgrounded + "<gr");
         //Debug.Log(curr);
         prev = curr;
         curr = transform.position.y;
         crosshair = transform.position;
+
+
+
+
+
+
+        /*
 
         prevvec = currvec;
         currvec = new Vector2(transform.position.x, transform.position.z);
@@ -77,28 +93,59 @@ public class Goober : MonoBehaviour
 
         
         //Debug.Log("rot" + rotangle);//rot is in degrees?
-        finalrot = new Vector3(0, ((prevrotangle + rotangle)/-2) + 90, 0);
+        finalrot = new Vector3(0, rotangle + 90, 0);
         //finalrot = (transform.localEulerAngles + finalrot)/2;
         transform.localEulerAngles = finalrot;
+        */
+
+
+
+
+        //transform.LookAt(new Vector3(Goofer.crosshair.x, 0, Goofer.crosshair.z), Vector3.up);
 
         //finaloverriderotation = Quaternion.Euler(0, 0, rotangle);
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.position += new Vector3(0, 0, Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.position += new Vector3(-Time.deltaTime, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.position += new Vector3(0, 0, -Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position += new Vector3(Time.deltaTime, 0, 0);
-        }
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    transform.position += new Vector3(0, 0, Time.deltaTime * 2);
+        //}
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    transform.position += new Vector3(-Time.deltaTime *2, 0, 0);
+        //}
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    transform.position += new Vector3(0, 0, -Time.deltaTime * 2);
+        //}
+        //if (Input.GetKey(KeyCode.D))
+        //{
+        //    transform.position += new Vector3(Time.deltaTime * 2, 0, 0);
+        //}
+        float horiz = Input.acceleration.x * 1 * Time.deltaTime;
+        float vert = Input.acceleration.y * 1 * Time.deltaTime;
+        //float vert = (-Input.acceleration.z) * 0 * Time.deltaTime;
+        Debug.Log(-Input.acceleration.z);
+        transform.position += new Vector3(horiz, 0, vert);
 
+
+        prevprevprevvec = prevprevvec;
+        prevprevvec = prevvec;
+        prevvec = currvec;
+        currvec = new Vector2(horiz * 2, vert * 2);
+        //forwardvec = (currvec + prevvec)*.5f;//could just be currvec
+        forwardvec = (currvec + (prevvec + (prevprevvec + prevprevprevvec) * .5f) *.5f) * .5f;
+        //rotangle = forwardvec.x + forwardvec.y;
+        
+        if (horiz != 0)//prevents NaN???
+        {
+            rotangle = Mathf.Atan2(forwardvec.y, forwardvec.x) * (180 / Mathf.PI);//abrasive?
+        }
+        //Debug.Log("rot"+rotangle);//rot is in radians! pi must map to 180?
+
+
+        //Debug.Log("rot" + rotangle);//rot is in degrees?
+        finalrot = new Vector3(0, -rotangle+90, 0);
+        //finalrot = (transform.localEulerAngles + finalrot)/2;
+        transform.localEulerAngles = finalrot;
 
 
         if (Input.GetKeyDown(KeyCode.Space))//issue; getkeydown can be held?
@@ -108,12 +155,19 @@ public class Goober : MonoBehaviour
             //normfinalrot = leaprot.normalized;
             //Debug.Log("jumped");
             //Vector3(90, 0, rotangle-90);
-            rb.AddForce(transform.forward * 20);
+
+            istapped = true;
+
             //rb.AddForce(normfinalrot * 20);
             //rb.AddForce(Vector3.forward * 20);//needs to be stronger than gravity (9.81), no longer jumps, now lurches forward. now dependent on mass
             //rb.AddExplosionForce(10, Vector3.up, 1);//needs to be stronger than gravity (9.81)
         }
-
+        if (istapped)
+        {
+            rb.AddForce(transform.forward * 20);
+            audioSourcespeed.PlayOneShot(speedsound);
+            istapped = false;
+        }
 
 
     }
@@ -125,7 +179,6 @@ public class Goober : MonoBehaviour
         //Debug.Log(collision);
         //Debug.Log(ydiff);
         istouched = true;
-
 
         audioSource.PlayOneShot(hitsound);
 

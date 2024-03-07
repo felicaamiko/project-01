@@ -56,6 +56,7 @@ public class GameState : MonoBehaviour
             }
             if (!Goober.isgrounded) {
                 statetext.text = "lost";
+                
             }
             //Debug.Log("gaaa");
         }

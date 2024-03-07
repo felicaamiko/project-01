@@ -26,7 +26,7 @@ public class Goofer : MonoBehaviour
             isgroundedgoof = false;
         }
 
-
+        crosshair = transform.position;
         currentpos = transform.position;
         //withoutycrosshair = Goober.crosshair * Vector3(1, 0, 1);
         tovector = currentpos - Goober.crosshair;
@@ -35,7 +35,7 @@ public class Goofer : MonoBehaviour
         //Debug.Log(tovector);
 
         tovector.Normalize();
-        transform.position -= tovector * 2 * Time.deltaTime; //moves enemy towards player. 
+        transform.position -= tovector * 1.1f * Time.deltaTime; //moves enemy towards player. 
 
 
         transform.LookAt(new Vector3(Goober.crosshair.x, 0, Goober.crosshair.z), Vector3.up);
