@@ -822,6 +822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d802049cd4da4547a273cd3ffcc6be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSourcedeath: {fileID: 1145245360}
+  deathsound: {fileID: 8300000, guid: 3b2b7ca61ab99704691c854b8073311c, type: 3}
 --- !u!135 &1121165200
 SphereCollider:
   m_ObjectHideFlags: 0

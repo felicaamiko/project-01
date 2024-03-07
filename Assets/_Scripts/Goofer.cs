@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Goofer : MonoBehaviour
 {
@@ -11,9 +12,10 @@ public class Goofer : MonoBehaviour
     private Vector3 anglevector;
     private float angle;
     private Vector3 withoutycrosshair;
-
+    private int counter;
     public static bool isgroundedgoof = true;
-
+    [SerializeField] AudioSource audioSourcedeath;
+    [SerializeField] AudioClip deathsound;
 
     void Update()
     {
@@ -21,9 +23,11 @@ public class Goofer : MonoBehaviour
         if (transform.position.y > -3) {
             isgroundedgoof = true;
         }
-        if (transform.position.y < -3)
+        if (transform.position.y < -3 && counter<100)
         {
             isgroundedgoof = false;
+            counter++;
+            audioSourcedeath.PlayOneShot(deathsound);
         }
 
         crosshair = transform.position;

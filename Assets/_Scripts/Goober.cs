@@ -38,6 +38,8 @@ public class Goober : MonoBehaviour
     private Vector3 normfinalrot;
     private Vector3 leaprot;
 
+    private int counter;
+
     public GameObject thisobject;
     Rigidbody rb;
     public static bool istapped = false;
@@ -59,7 +61,7 @@ public class Goober : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //counter++;
+        
         //if (prev*100 - curr*100 == 0) { isgrounded = true; }
         //if (prev * 100 - curr*100 != 0) { isgrounded = false; }
         //if (counter > 100000000)
@@ -69,7 +71,10 @@ public class Goober : MonoBehaviour
         //    counter = 0;
         //}
         if (curr > -3) { isgrounded = true; }
-        if (curr < -3) { isgrounded = false; }
+        if (curr < -3 &&counter<100) { isgrounded = false;
+            counter++;
+            audioSourcedeath.PlayOneShot(deathsound);
+        }
         //Debug.Log(prev - curr + "<prev-curr" + isgrounded + "<gr");
         //Debug.Log(curr);
         prev = curr;
